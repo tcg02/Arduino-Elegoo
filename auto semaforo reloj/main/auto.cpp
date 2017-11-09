@@ -1,25 +1,13 @@
 #include <Arduino.h>
-#include <IRremote.h>
 #include "timer.h"
+#include "auto.h"
 
-#define RECV_PIN 12
-#define ENA 10
-#define IN1 9
-#define IN2 8
-#define ENB 5
-#define IN3 7
-#define IN4 6
-
-#define F 16736925
-#define B 16754775
-#define L 16720605
-#define R 16761405
-#define S 16712445
-#define UNKNOWN_F 5316027
-#define UNKNOWN_B 2747854299
-#define UNKNOWN_L 1386468383
-#define UNKNOWN_R 553536955
-#define UNKNOWN_S 3622325019
+#define ENA 10 
+#define IN1 9 //Izquierda retrocede
+#define IN2 8 //Izquierda avanza
+#define ENB 5 
+#define IN3 7 //Derecha retrocede
+#define IN4 6 //Derecha avanza
 
 #define AUTO_AVANZAR 0
 #define AUTO_RETROCEDER 1
@@ -27,11 +15,7 @@
 #define AUTO_IZQUIERDA 3
 #define AUTO_DER_REV 4
 #define AUTO_IZQ_REV 5
-#define AUTO_WAIT 6
-
-IRrecv irrecv(RECV_PIN);
-decode_results results;
-static unsigned long val;
+#define AUTO_STOP 6
 
 static int state_auto;
 
@@ -46,46 +30,33 @@ void auto_setup()
   digitalWrite(ENA, HIGH);
   digitalWrite(ENB, HIGH);
   Serial.begin(9600);
-  state_auto = AUTO_WAIT;
-  irrecv.enableIRIn();
+  state_auto = AUTO_STOP;
+  
 }
 void auto_loop()
 {
-  if (irrecv.decode(&results)) {
-    val = results.value;
-    Serial.println(val);
-    irrecv.resume();
-    switch (val) {
-      case F:
-      case UNKNOWN_F: state_auto = AUTO_AVANZAR; break;
-      case B:
-      case UNKNOWN_B: state_auto = AUTO_RETROCEDER; break;
-      case L:
-      case UNKNOWN_L: //_mleft(); break;
-      case R:
-      case UNKNOWN_R: //_mright();break;
-      case S:
-      case UNKNOWN_S: state_auto = AUTO_WAIT; break;
-      default: break;
-    }
-  }
+  
+  auto_accion();
+}
 
+void auto_accion()
+{
   if (timer_waitMs(RELOJ_TIMER_5, 1000))
   {
     switch (state_auto)
     {
       case AUTO_AVANZAR:
         digitalWrite(IN1, LOW);
-        digitalWrite(IN2, HIGH);        // left wheel goes forward
-        digitalWrite(IN3, LOW);         // GIRAN TODAS HACIA ADELANTE
-        digitalWrite(IN4, HIGH);        // right wheel goes forward
+        digitalWrite(IN2, HIGH);        
+        digitalWrite(IN3, LOW);         
+        digitalWrite(IN4, HIGH);        
         Serial.println("AVANZAR");
         break;
       case AUTO_RETROCEDER:
         digitalWrite(IN1, HIGH);
-        digitalWrite(IN2, LOW);       //left wheel is back up
-        digitalWrite(IN3, HIGH);      //GIRAN LAS 4 PARA ATRAS
-        digitalWrite(IN4, LOW);       // right wheel is back up
+        digitalWrite(IN2, LOW);       
+        digitalWrite(IN3, HIGH);      
+        digitalWrite(IN4, LOW);       
         Serial.println("RETROCEDER");
         break;
       case AUTO_DERECHA:
@@ -116,7 +87,7 @@ void auto_loop()
         digitalWrite(IN4, LOW);
         Serial.println("IZQUIERDA REVERSA");
         break;
-      case AUTO_WAIT:
+      case AUTO_STOP:
         digitalWrite(IN1, LOW);
         digitalWrite(IN2, LOW);
         digitalWrite(IN3, LOW);
@@ -125,4 +96,3 @@ void auto_loop()
     }
   }
 }
-
