@@ -39,30 +39,50 @@ void auto_setup()
 
 void auto_loop()
 {
-  
-  
     getstr = Serial.read();
-
-    switch(getstr)
+    
+    if(getstr == 'f')
     {
-      case 'f':
+      state_auto = AUTO_AVANZAR;
+    }
+    else if(getstr=='b')
+    {
+      state_auto = AUTO_RETROCEDER;
+    }
+    else if(getstr=='l')
+    {
+      state_auto = AUTO_IZQUIERDA;
+    }
+    else if(getstr=='r')
+    {
+      state_auto = AUTO_DERECHA;
+    }
+    else if(getstr=='s')
+    {
+        state_auto = AUTO_STOP;
+    }
+    else if(getstr=='A')
+    {
+    stateChange();
+    }
+
+    switch(state_auto)
+    {
+      case AUTO_AVANZAR:
         auto_avanzar();
         break;
-      case 'b':
+      case AUTO_RETROCEDER:
         auto_retroceder();
         break;
-      case 'l':
+      case AUTO_IZQUIERDA:
         auto_izquierda();
         break;
-      case 'r':
+      case AUTO_DERECHA:
         auto_derecha();
         break;
-      case 's':
+      case AUTO_STOP:
         auto_stop();
         break;
-      case 'A':
-        void stateChange();
-        break;  
     }
 
 }
