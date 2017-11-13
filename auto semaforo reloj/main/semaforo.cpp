@@ -12,6 +12,18 @@
 #define SEMAFORO_VERDE_1 2
 #define SEMAFORO_WAIT 3
 
+#define SEMAFORO_ROJO_2 4
+#define SEMAFORO_AMARILLO_2 5
+#define SEMAFORO_VERDE_2 6
+
+#define LED_PIN_ROJO 5
+#define LED_PIN_AMARILLO 6
+#define LED_PIN_VERDE 7
+
+#define LED_PIN_ROJO_2 8
+#define LED_PIN_AMARILLO_2 9
+#define LED_PIN_VERDE_2 10
+
 static int state_semaforo;
 
 /** \brief  Se invoca una sola vez cuando el programa empieza.
@@ -24,6 +36,12 @@ void semaforo_setup(void)
 {
   Serial.begin(9600);
   state_semaforo = SEMAFORO_ROJO_1;
+  pinMode(LED_PIN_AMARILLO, OUTPUT);
+  pinMode(LED_PIN_ROJO, OUTPUT);
+  pinMode(LED_PIN_VERDE, OUTPUT);
+  pinMode(LED_PIN_AMARILLO_2, OUTPUT);
+  pinMode(LED_PIN_ROJO_2, OUTPUT);
+  pinMode(LED_PIN_VERDE_2, OUTPUT);
 }
 
 
@@ -55,12 +73,36 @@ void semaforo_loop(void)
     {
       case SEMAFORO_ROJO_1:
         Serial.println("ROJO");
+        digitalWrite(LED_PIN_ROJO, HIGH);
+        digitalWrite(LED_PIN_AMARILLO, LOW);
+        digitalWrite(LED_PIN_VERDE, LOW);
         break;
       case SEMAFORO_AMARILLO_1:
         Serial.println("AMARILLO");
+        digitalWrite(LED_PIN_ROJO, LOW);
+        digitalWrite(LED_PIN_AMARILLO, HIGH);
+        digitalWrite(LED_PIN_VERDE, LOW);
         break;
       case SEMAFORO_VERDE_1:
         Serial.println("VERDE");
+        digitalWrite(LED_PIN_ROJO, LOW);
+        digitalWrite(LED_PIN_AMARILLO, LOW);
+        digitalWrite(LED_PIN_VERDE, HIGH);
+        break;
+      case SEMAFORO_ROJO_2:
+        digitalWrite(LED_PIN_ROJO_2, HIGH);
+        digitalWrite(LED_PIN_AMARILLO_2, LOW);
+        digitalWrite(LED_PIN_VERDE_2, LOW);
+        break;
+      case SEMAFORO_AMARILLO_2:
+        digitalWrite(LED_PIN_ROJO_2, LOW);
+        digitalWrite(LED_PIN_AMARILLO_2, HIGH);
+        digitalWrite(LED_PIN_VERDE_2, LOW);
+        break;
+      case SEMAFORO_VERDE_2:
+        digitalWrite(LED_PIN_ROJO_2, LOW);
+        digitalWrite(LED_PIN_AMARILLO_2, LOW);
+        digitalWrite(LED_PIN_VERDE_2, HIGH);
         break;
     }
   }

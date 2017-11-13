@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Servo.h>
 #include "timer.h"
 #include "auto.h"
 
@@ -9,6 +10,8 @@
 #define IN3 7 //Derecha retrocede
 #define IN4 6 //Derecha avanza
 #define LED 13
+#define ECHO A4 
+#define TRIG A5
 
 #define AUTO_AVANZAR 0
 #define AUTO_RETROCEDER 1
@@ -18,7 +21,13 @@
 #define AUTO_IZQ_REV 5
 #define AUTO_STOP 6
 
-volatile int state = LOW;
+#define TRIG_HIGH 1
+#define TRIG_LOW 0
+#define ECHO_HIGH 1
+#define ECHO_LOW 0
+
+static int state_trig;
+static int state_echo;
 static int state_auto;
 static int ABS = 135;
 char getstr;
@@ -35,6 +44,9 @@ void auto_setup()
   Serial.begin(9600);
   state_auto = AUTO_STOP;
   auto_stop();
+  pinMode(ECHO, INPUT);    
+  pinMode(TRIG, OUTPUT);
+  
 }
 
 void auto_loop()
@@ -73,7 +85,7 @@ void auto_loop()
   {
     stateChange();
   }
-  if (timer_waitMs(RELOJ_TIMER_5, 1000))
+  if (timer_waitMs(RELOJ_TIMER_5, 150))
   {
     switch (state_auto)
     {
@@ -176,9 +188,5 @@ void auto_stop()
 
 }
 
-void stateChange()
-{
-  state = !state;
-  digitalWrite(LED, state);
-}
+
 
