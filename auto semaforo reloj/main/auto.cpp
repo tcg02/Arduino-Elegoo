@@ -81,10 +81,7 @@ void auto_loop()
   {
     state_auto = AUTO_IZQ_REV;
   }
-  else if (getstr == 'A')
-  {
-    stateChange();
-  }
+  
   if (timer_waitMs(RELOJ_TIMER_5, 150))
   {
     switch (state_auto)

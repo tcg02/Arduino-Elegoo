@@ -8,6 +8,8 @@
 
 #define RELOJ_TIMER_4 4
 #define RELOJ_TIMER_5 5
+#define RELOJ_TIMER_6 6
+#define RELOJ_TIMER_7 7
 
 typedef struct
 {

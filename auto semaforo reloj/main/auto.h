@@ -8,4 +8,3 @@ void auto_derechaRev();
 void auto_izquierdaRev();
 void auto_stop();
 
-void stateChange();

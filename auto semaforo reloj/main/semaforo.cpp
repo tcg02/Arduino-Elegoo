@@ -16,6 +16,7 @@
 #define SEMAFORO_AMARILLO_2 5
 #define SEMAFORO_VERDE_2 6
 #define SEMAFORO_WAIT_2 7
+#define SEMAFORO_VERDE_2_2 6
 
 #define LED_PIN_ROJO 5
 #define LED_PIN_AMARILLO 6
@@ -30,6 +31,9 @@
 #define TIEMPO_AMARILLO 2000
 
 static int state_semaforo;
+static int state_semaforo_2;
+static int tiempoRojo1;
+static int tiempoRojo2;
 
 /** \brief  Se invoca una sola vez cuando el programa empieza.
             Se utiliza para inicializar los modos de trabajo
@@ -41,12 +45,15 @@ void semaforo_setup(void)
 {
   Serial.begin(9600);
   state_semaforo = SEMAFORO_ROJO_1;
+  state_semaforo_2 = SEMAFORO_VERDE_2;
   pinMode(LED_PIN_AMARILLO, OUTPUT);
   pinMode(LED_PIN_ROJO, OUTPUT);
   pinMode(LED_PIN_VERDE, OUTPUT);
   pinMode(LED_PIN_AMARILLO_2, OUTPUT);
   pinMode(LED_PIN_ROJO_2, OUTPUT);
   pinMode(LED_PIN_VERDE_2, OUTPUT);
+  tiempoRojo2 = TIEMPO_VERDE1 + TIEMPO_AMARILLO; 
+  tiempoRojo1 = TIEMPO_VERDE2 + TIEMPO_AMARILLO; 
 }
 
 
@@ -89,6 +96,7 @@ void semaforo_loop(void)
     switch (state_semaforo)
     {
       case SEMAFORO_ROJO_1:
+      case SEMAFORO_WAIT:
         Serial.println("ROJO");
         digitalWrite(LED_PIN_ROJO, HIGH);
         digitalWrite(LED_PIN_AMARILLO, LOW);
@@ -125,6 +133,7 @@ void semaforo_loop(void)
       Serial.println("AMARILLO");
       break;
     case SEMAFORO_VERDE_2:
+    case SEMAFORO_WAIT_2:
       digitalWrite(LED_PIN_ROJO_2, LOW);
       digitalWrite(LED_PIN_AMARILLO_2, LOW);
       digitalWrite(LED_PIN_VERDE_2, HIGH);
@@ -136,7 +145,8 @@ void semaforo_loop(void)
 
 void semaforo_start()
 {
-  if (state_semaforo == SEMAFORO_WAIT)
+  if (state_semaforo_2 == SEMAFORO_WAIT_2)
     state_semaforo = SEMAFORO_ROJO_1;
+    state_semaforo_2 = SEMAFORO_VERDE_2;
 }
 
