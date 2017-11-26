@@ -48,7 +48,7 @@ void reloj_setup(void)
 }
 
 
-/** \brief  Contiene el programa del reloj que se ejecutará cíclicamente
+/** \brief  Contiene el programa del reloj que se ejecutarÃ¡ cÃ­clicamente
 
    \param void
    \return void
@@ -174,10 +174,10 @@ void incrementarSegundos()
 
 }
 
-/** \brief  Realiza la lectura de la entrada analogica y determina según su valor
-            a que botón hace referencia.
+/** \brief  Realiza la lectura de la entrada analogica y determina segÃºn su valor
+            a que botÃ³n hace referencia.
    \param void
-   \return int: Que representa el botón pulsado
+   \return int: Que representa el botÃ³n pulsado
 */
 int read_LCD_buttons(void)
 {
@@ -200,3 +200,4 @@ int read_LCD_buttons(void)
 
   return lcd_key;
 }
+

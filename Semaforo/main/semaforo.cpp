@@ -57,7 +57,7 @@ void semaforo_setup(void)
 }
 
 
-/** \brief  Contiene el programa del semaforo que se ejecutará cíclicamente
+/** \brief  Contiene el programa del semaforo que se ejecutarÃ¡ cÃ­clicamente
 
    \param void
    \return void
@@ -149,4 +149,5 @@ void semaforo_start()
     state_semaforo = SEMAFORO_ROJO_1;
     state_semaforo_2 = SEMAFORO_VERDE_2;
 }
+
 

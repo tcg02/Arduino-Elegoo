@@ -1,17 +1,14 @@
 #include <Arduino.h>
-#include <Servo.h>
 #include "timer.h"
 #include "auto.h"
 
+#define LED 13
 #define ENA 10
 #define IN1 9 //Izquierda retrocede
 #define IN2 8 //Izquierda avanza
 #define ENB 5
 #define IN3 7 //Derecha retrocede
 #define IN4 6 //Derecha avanza
-#define LED 13
-#define ECHO A4 
-#define TRIG A5
 
 #define AUTO_AVANZAR 0
 #define AUTO_RETROCEDER 1
@@ -21,20 +18,12 @@
 #define AUTO_IZQ_REV 5
 #define AUTO_STOP 6
 
-#define TRIG_HIGH 1
-#define TRIG_LOW 0
-#define ECHO_HIGH 1
-#define ECHO_LOW 0
-
-static int state_trig;
-static int state_echo;
-static int state_auto;
+volatile int state_auto;
 static int ABS = 135;
 char getstr;
 
 void auto_setup()
 {
-  pinMode(LED, OUTPUT);
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
@@ -43,10 +32,6 @@ void auto_setup()
   pinMode(ENB, OUTPUT);
   Serial.begin(9600);
   state_auto = AUTO_STOP;
-  auto_stop();
-  pinMode(ECHO, INPUT);    
-  pinMode(TRIG, OUTPUT);
-  
 }
 
 void auto_loop()
@@ -81,8 +66,8 @@ void auto_loop()
   {
     state_auto = AUTO_IZQ_REV;
   }
-  
-  if (timer_waitMs(RELOJ_TIMER_5, 150))
+
+  if (timer_waitMs(RELOJ_TIMER_5, 1000))
   {
     switch (state_auto)
     {
@@ -146,7 +131,6 @@ void auto_derecha()
   digitalWrite(IN4, HIGH);
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
-
 }
 void auto_izquierda()
 {
@@ -156,7 +140,6 @@ void auto_izquierda()
   digitalWrite(IN2, HIGH);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, LOW);
-
 }
 void auto_derechaRev()
 {
@@ -166,7 +149,6 @@ void auto_derechaRev()
   digitalWrite(IN4, LOW);
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
-  
 }
 void auto_izquierdaRev()
 {
@@ -176,13 +158,11 @@ void auto_izquierdaRev()
   digitalWrite(IN2, LOW);
   digitalWrite(IN3, LOW);
   digitalWrite(IN4, LOW);
-  
 }
 void auto_stop()
 {
   digitalWrite(ENA, LOW);
   digitalWrite(ENB, LOW);
-
 }
 
 
